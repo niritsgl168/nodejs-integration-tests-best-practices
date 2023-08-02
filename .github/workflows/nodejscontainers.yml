@@ -1,0 +1,34 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI with Containers
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: node:18 # Replace with the desired Node.js version or your custom container image
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: myuserpassword
+          POSTGRES_DB: shop
+        ports:
+          - 5432:5432
+
+    steps:
+      - run: npm ci
+      - run: npm test
+      - run: npm run test:nestjs
+      - run: npm run test:mocha

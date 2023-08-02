@@ -1,9 +1,11 @@
+const isCI = require('is-ci');
+
 module.exports = {
   username: "myuser",
   password: "myuserpassword",
   database: "shop",
-  host: "localhost",
-  port: 54310,
+  host: isCI ? "postgres" : "localhost",
+  port: isCI ? 5432 : 54310,
   logging: false,
   dialect: "postgres",
   pool: {
